@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados PNCP</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { display: inline-block; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px; margin-bottom: 1rem;}
+    </style>
+</head>
+<body>
+    <a href="/" class="btn">← Nova Busca</a>
+    <h1>Resultados da Busca</h1>
+    
+    {% if dados %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>UF</th>
+                    <th>Objeto (Descrição)</th>
+                    <th>Valor Estimado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- O Jinja2 faz um loop para cada item do banco -->
+                {% for item in dados %}
+                <tr>
+                    <td>{{ item.data_publicacao }}</td>
+                    <td>{{ item.uf }}</td>
+                    <!-- Aqui acessamos o JSON bruto e pegamos o objetoCompra -->
+                    <td>{{ item.detalhes.objetoCompra }}</td>
+                    <td>R$ {{ "%.2f"|format(item.detalhes.valorTotalEstimado or 0) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: red;">Nenhum resultado encontrado para esses filtros.</p>
+    {% endif %}
+
+    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+    
+        <!-- Botão Anterior -->
+        {% if tem_anterior %}
+            <a href="{{ request.url.include_query_params(offset=filtros.limite * (pagina_atual - 2)) }}" 
+            style="padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            &laquo; Página Anterior
+            </a>
+        {% else %}
+            <span style="padding: 10px; background: #ccc; color: #666; border-radius: 5px; cursor: not-allowed;">
+            &laquo; Página Anterior
+            </span>
+        {% endif %}
+
+        <!-- Informação da Página -->
+        <span>Página {{ pagina_atual }} de {{ total_paginas }} ({{ total_registros }} resultados)</span>
+
+        <!-- Botão Próxima -->
+        {% if tem_proxima %}
+            <a href="{{ request.url.include_query_params(offset=filtros.limite * pagina_atual) }}" 
+            style="padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            Próxima Página &raquo;
+            </a>
+        {% else %}
+            <span style="padding: 10px; background: #ccc; color: #666; border-radius: 5px; cursor: not-allowed;">
+            Próxima Página &raquo;
+            </span>
+        {% endif %}
+
+    </div>
+</body>
+</html>
