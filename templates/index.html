@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador PNCP</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
+        .campo { margin-bottom: 1rem; }
+        label { display: block; font-weight: bold; margin-bottom: 0.3rem; }
+        input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 0.7rem 1.5rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 1rem;}
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Consultar Contratações PNCP</h1>
+    <p>Preencha os campos que deseja filtrar (todos são opcionais).</p>
+    
+    <!-- O action envia os dados para a rota /contratacoes -->
+    <form action="/contratacoes" method="GET">
+        <div class="campo">
+            <label>Estado (UF):</label>
+            <input type="text" name="uf" placeholder="Ex: SP, RJ, MG" maxlength="2">
+        </div>
+        
+        <div class="campo">
+            <label>Palavra-chave (Objeto da compra):</label>
+            <input type="text" name="palavra_chave" placeholder="Ex: computador, merenda">
+        </div>
+        
+        <div class="campo">
+            <label>Valor Mínimo (R$):</label>
+            <input type="number" name="valor_minimo" step="0.01" placeholder="Ex: 50000">
+        </div>
+        
+        <button type="submit">Buscar Licitações</button>
+    </form>
+</body>
+</html>
